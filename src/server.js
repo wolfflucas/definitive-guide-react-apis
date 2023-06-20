@@ -6,6 +6,14 @@ export default function () {
       items: Model,
     },
 
+    // Create initial data
+    seeds(server) {
+      server.create("item", { title: "Rice", isDone: false });
+      server.create("item", { title: "Beans", isDone: false });
+      server.create("item", { title: "Flour", isDone: true });
+      server.create("item", { title: "Carrot", isDone: true });
+    },
+
     routes() {
       // Prefix for every request
       this.namespace = "api";

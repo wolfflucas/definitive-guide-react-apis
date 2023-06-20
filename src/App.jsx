@@ -22,6 +22,7 @@ const App = () => {
   const { deleteItem, isLoading: isDeletingItem } = useDeleteGroceryListItem();
   const isLoading =
     isFetchingItems || isCreatingItem || isUpdatingItem || isDeletingItem;
+  const sortedItems = items.sort((a, b) => a.isDone - b.isDone);
 
   const handleAdd = (event) => {
     event.preventDefault();
@@ -32,11 +33,15 @@ const App = () => {
   };
 
   const handleMarkAsDone = (item) => {
-    markItemAsDone(item).then(() => refreshItems());
+    markItemAsDone(item).then(() => {
+      refreshItems();
+    });
   };
 
   const handleDelete = (item) => {
-    deleteItem(item).then(() => refreshItems());
+    deleteItem(item).then(() => {
+      refreshItems();
+    });
   };
 
   return (
@@ -63,8 +68,8 @@ const App = () => {
             Add
           </button>
         </form>
-        <ul className="mt-4 py-2 h-full overflow-y-scroll">
-          {items.map((item) => (
+        <ul className="mt-4 py-1 h-full overflow-y-scroll">
+          {sortedItems.map((item) => (
             <li key={item.id} className="w-full py-2">
               <label
                 className={`text-lg cursor-pointer ${
@@ -75,7 +80,7 @@ const App = () => {
                   type="checkbox"
                   checked={item.isDone}
                   onChange={() => handleMarkAsDone(item)}
-                  disabled={isLoading}
+                  disabled={isLoading || item.isDone}
                   className="mr-2"
                 />
                 {item.title}
